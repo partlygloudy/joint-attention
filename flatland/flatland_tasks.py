@@ -58,6 +58,9 @@ class TaskFood200(Task):
         # Reset arena
         self.arena.clear()
 
+        # Reset foodcounts
+        self.foodcount_prev = self.foodcount_init
+
         # Add 10 food objects randomly
         for i in range(self.foodcount_init):
 
