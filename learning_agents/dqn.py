@@ -51,7 +51,7 @@ def get_network():
 
     # Output layer
     output = Dense(
-        units=3,
+        units=4,
         kernel_initializer=VarianceScaling(scale=1.0)
     )(layer_d1)
 
@@ -117,7 +117,7 @@ class DQNAgent:
 
         # So we don't have to create this every time
         self.ones_mask = np.array([[1.0 for i in range(3)]])
-        self.num_actions = 3
+        self.num_actions = 4
 
     # Convert state into format expected by network
     # Input should be a numpy array where each row is a state
@@ -134,12 +134,18 @@ class DQNAgent:
     # Return the best action for a given state
     def choose_action(self, s):
         output = self.q_net.predict(self.preprocess_state(s))
+        print(output)
         return np.argmax(output)
 
     # Train q network using a batch of memories
     def learn_from_memory(self, batch_size=32):
         # Get batch data
         states, actions, rewards, next_states = self.memory.get_batch(batch_size)
+
+        print(states)
+        print(actions)
+        print(rewards)
+        print(next_states)
 
         # Preprocess inputs to network
         states_pp = self.preprocess_states(states)
