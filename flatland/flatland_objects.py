@@ -213,7 +213,7 @@ class Arena:
     def agent_move_lin(self, agent, dir=1):
 
         # Position agent is trying to move to
-        noise = + np.random.normal(0.0, 0.1) * agent.speed
+        noise = + np.random.normal(0.0, 0.1) * agent.speed_lin
         new_x = (agent.x + agent.speed_lin * cos(agent.orientation) * dir) + noise
         new_y = (agent.y - agent.speed_lin * sin(agent.orientation) * dir) + noise
 
