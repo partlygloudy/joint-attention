@@ -1,0 +1,6 @@
+
+.idea/
+venv/
+_educational/
+
+__pycache__/
