@@ -15,7 +15,7 @@ def get_network():
     ### ADD LAYERS TO MODEL ###
 
     # Input layer
-    input = Input(shape=(32, 1))
+    input = Input(shape=(32, 3))
 
     # Scale values from 0 to 1
     normalized = Lambda(lambda x: x / 255.0)(input)
