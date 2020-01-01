@@ -123,12 +123,12 @@ class DQNAgent:
     # Input should be a numpy array where each row is a state
     def preprocess_state(self, s):
         # Make sure s is a numpy array with correct dimensions
-        s_np = np.array(s).astype(np.float32).reshape(1, 32, 1)
+        s_np = np.array(s).astype(np.float32).reshape(1, 32, 3)
         return s_np
 
     def preprocess_states(self, states):
         s_np = np.array(states).astype(np.float32)
-        s_np = np.reshape(s_np, (s_np.shape[0], 32, 1))
+        s_np = np.reshape(s_np, (s_np.shape[0], 32, 3))
         return s_np
 
     # Return the best action for a given state
