@@ -123,7 +123,7 @@ class TaskFood200(Task):
         done = self.arena.get_agent_by_id(1).get_energy() <= 0 or foodcount == 0
 
         # Return reward, next state, stop indicator
-        return r, s_next, done
+        return s_next, r, done
 
     def render(self, scale=1):
 

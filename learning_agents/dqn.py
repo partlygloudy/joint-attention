@@ -134,18 +134,12 @@ class DQNAgent:
     # Return the best action for a given state
     def choose_action(self, s):
         output = self.q_net.predict(self.preprocess_state(s))
-        print(output)
         return np.argmax(output)
 
     # Train q network using a batch of memories
     def learn_from_memory(self, batch_size=32):
         # Get batch data
         states, actions, rewards, next_states = self.memory.get_batch(batch_size)
-
-        print(states)
-        print(actions)
-        print(rewards)
-        print(next_states)
 
         # Preprocess inputs to network
         states_pp = self.preprocess_states(states)
