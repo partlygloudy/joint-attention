@@ -213,8 +213,9 @@ class Arena:
     def agent_move_lin(self, agent, dir=1):
 
         # Position agent is trying to move to
-        new_x = agent.x + agent.speed_lin * cos(agent.orientation) * dir
-        new_y = agent.y - agent.speed_lin * sin(agent.orientation) * dir
+        noise = + np.random.normal(0.0, 0.1) * agent.speed
+        new_x = (agent.x + agent.speed_lin * cos(agent.orientation) * dir) + noise
+        new_y = (agent.y - agent.speed_lin * sin(agent.orientation) * dir) + noise
 
         # Keep agent inside the arena
         min_dist = agent.radius + agent.eye_radius + 2
@@ -235,7 +236,8 @@ class Arena:
 
     # Rotate an agent
     def agent_move_ang(self, agent, dir):
-        agent.orientation += agent.speed_ang * dir
+        noise = np.random.normal(0.0, agent.speed_ang / 4)
+        agent.orientation += (agent.speed_ang * dir) + noise
 
 
 # ----------------------------------- #
