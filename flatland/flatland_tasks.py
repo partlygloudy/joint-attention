@@ -1,5 +1,5 @@
 # Import flatland objects
-from flatland.flatland_objects import *
+from .flatland_objects import *
 
 # --------------------------------- #
 # --- TASK CLASS AND SUBCLASSES --- #
