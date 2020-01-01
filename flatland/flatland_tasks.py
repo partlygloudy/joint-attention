@@ -128,7 +128,7 @@ class TaskFood200(Task):
         # Return reward, next state, stop indicator
         return s_next, r, done
 
-    def render(self, scale=1):
+    def render(self, scale=1, mode="display"):
 
         # Get arena display as numpy array
         frame = pygame.surfarray.array3d(self.arena.display)
@@ -159,5 +159,10 @@ class TaskFood200(Task):
         # Resize
         frame = cv2.resize(frame, (int(frame.shape[1] * scale), int(frame.shape[0] * scale)), interpolation=cv2.INTER_LINEAR)
 
-        cv2.imshow("Food Collection Task", frame)
-        cv2.waitKey(10)
+        if mode == "display":
+            cv2.imshow("Food Collection Task", frame)
+            cv2.waitKey(10)
+
+        elif mode == "return":
+            return frame
+
