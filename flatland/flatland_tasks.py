@@ -271,6 +271,9 @@ class TaskBasicChoice(Task):
             r = tick_data["reward_collected"]
             done = True
 
+        # Check if agent out of energy
+        done = done or self.arena.get_agent_by_id(1).get_energy() < 0
+
         # Get next state
         s_next = self.arena.get_agent_by_id(1).vision
 
