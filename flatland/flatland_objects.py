@@ -71,14 +71,17 @@ class Arena:
         # Clear display
         self.display.fill(color=self._color)
 
+        # Draw agents
+        for agent_id, agent in self._agents.items():
+            agent.draw_self(self.display)
+
         # Draw objects
         for obj_id, obj in self._objects.items():
             obj.draw_self(self.display)
 
-        # Draw agents and update vision
+        # Update agent vision
         for agent_id, agent in self._agents.items():
             self.update_agent_vision(agent_id)
-            agent.draw_self(self.display)
 
     # Return the vision vector for an agent
     def update_agent_vision(self, agent_id):
@@ -104,7 +107,7 @@ class Arena:
         T = np.reshape(T, (1, len(T)))
 
         # Create array of search radii
-        R = np.linspace(agent.eye_radius + 2, agent.eye_radius + rows, num=rows + 1)
+        R = np.linspace(agent.eye_radius + 3, agent.eye_radius + rows, num=rows + 1)
         R = np.reshape(R, (len(R), 1))
 
         # Compute X and Y matrices
@@ -199,7 +202,7 @@ class Arena:
                         dist = np.linalg.norm(agnt_coords - food_coords, ord=2)
 
                         # If they are touching, consume the object
-                        if dist < agent.radius + obj.radius:
+                        if dist < agent.radius + obj.radius + 8:
                             obj.do_consume(agent)
                             consumed.append(object_id)
 
@@ -227,9 +230,9 @@ class Arena:
     def agent_move_lin(self, agent, dir=1):
 
         # Position agent is trying to move to
-        noise = + np.random.normal(0.0, 0.1) * agent.speed_lin
-        new_x = (agent.x + agent.speed_lin * cos(agent.orientation) * dir) + noise
-        new_y = (agent.y - agent.speed_lin * sin(agent.orientation) * dir) + noise
+        noise = np.random.normal(0.0, 0.1) * agent.speed_lin
+        new_x = (agent.x + ((agent.speed_lin + noise) * cos(agent.orientation) * dir))
+        new_y = (agent.y - ((agent.speed_lin + noise) * sin(agent.orientation) * dir))
 
         # Keep agent inside the arena
         min_dist = agent.radius + agent.eye_radius + 2
