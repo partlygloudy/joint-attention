@@ -107,7 +107,7 @@ class DQNAgent:
 
     def __init__(self, memsize, gamma, resolution=32):
         # Compile network
-        self.q_net = get_network()
+        self.q_net = get_network(resolution=resolution)
 
         # Save params
         self.gamma = gamma
