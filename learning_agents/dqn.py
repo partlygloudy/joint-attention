@@ -23,7 +23,7 @@ def get_network(resolution=32):
     # First convolution layer
     layer_c1 = Convolution1D(
         filters=8,
-        kernel_size=resolution / 4,
+        kernel_size=int(resolution / 4),
         strides=2,
         padding="same",
         activation="relu",
@@ -33,7 +33,7 @@ def get_network(resolution=32):
     # Second convolution layer
     layer_c2 = Convolution1D(
         filters=16,
-        kernel_size=resolution / 8,
+        kernel_size=int(resolution / 8),
         strides=2,
         padding="same",
         activation="relu",
