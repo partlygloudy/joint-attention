@@ -117,8 +117,8 @@ class DQNAgent:
         self.memory = ReplayMemory(memsize)
 
         # So we don't have to create this every time
-        self.ones_mask = np.array([[1.0 for i in range(3)]])
         self.num_actions = 6
+        self.ones_mask = np.array([[1.0 for i in range(self.num_actions)]])
 
     # Convert state into format expected by network
     # Input should be a numpy array where each row is a state
