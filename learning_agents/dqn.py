@@ -22,8 +22,8 @@ def get_network(resolution=32):
 
     # First convolution layer
     layer_c1 = Convolution1D(
-        filters=4,
-        kernel_size=8,
+        filters=8,
+        kernel_size=resolution / 4,
         strides=2,
         padding="same",
         activation="relu",
@@ -32,8 +32,8 @@ def get_network(resolution=32):
 
     # Second convolution layer
     layer_c2 = Convolution1D(
-        filters=8,
-        kernel_size=4,
+        filters=16,
+        kernel_size=resolution / 8,
         strides=2,
         padding="same",
         activation="relu",
@@ -45,13 +45,13 @@ def get_network(resolution=32):
 
     # Dense layer
     layer_d1 = Dense(
-        units=16, activation="relu",
+        units=32, activation="relu",
         kernel_initializer=VarianceScaling(scale=1.0)
     )(layer_flatten)
 
     # Output layer
     output = Dense(
-        units=4,
+        units=6,
         kernel_initializer=VarianceScaling(scale=1.0)
     )(layer_d1)
 
@@ -118,7 +118,7 @@ class DQNAgent:
 
         # So we don't have to create this every time
         self.ones_mask = np.array([[1.0 for i in range(3)]])
-        self.num_actions = 4
+        self.num_actions = 6
 
     # Convert state into format expected by network
     # Input should be a numpy array where each row is a state
