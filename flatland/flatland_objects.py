@@ -170,10 +170,10 @@ class Arena:
                 self.agent_move_ang(agent, dir=-1)
 
             elif action == "l":
-                pass
+                self.agent_move_lat(agent, dir=-1)
 
             elif action == "r":
-                pass
+                self.agent_move_lat(agent, dir=1)
 
             # If applicable, reduce agent energy
             if isinstance(agent, EnergyAgent):
@@ -233,6 +233,31 @@ class Arena:
         noise = np.random.normal(0.0, 0.1) * agent.speed_lin
         new_x = (agent.x + ((agent.speed_lin + noise) * cos(agent.orientation) * dir))
         new_y = (agent.y - ((agent.speed_lin + noise) * sin(agent.orientation) * dir))
+
+        # Keep agent inside the arena
+        min_dist = agent.radius + agent.eye_radius + 2
+
+        if new_x < min_dist:
+            new_x = min_dist
+        if new_y < min_dist:
+            new_y = min_dist
+        if new_x > self._width - min_dist:
+            new_x = self._width - min_dist
+        if new_y > self._height - min_dist:
+            new_y = self._height - min_dist
+
+        # TODO: Check for collisions before applying the movement
+
+        agent.x = new_x
+        agent.y = new_y
+
+    # Move an agent linearly (if possible)
+    def agent_move_lat(self, agent, dir=1):
+
+        # Position agent is trying to move to
+        noise = np.random.normal(0.0, 0.1) * agent.speed_lin
+        new_x = (agent.x + ((agent.speed_lin + noise) * sin(agent.orientation) * dir))
+        new_y = (agent.y - ((agent.speed_lin + noise) * cos(agent.orientation) * dir))
 
         # Keep agent inside the arena
         min_dist = agent.radius + agent.eye_radius + 2

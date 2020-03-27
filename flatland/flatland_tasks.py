@@ -196,8 +196,8 @@ class TaskBasicChoice(Task):
 
         # Randomly select which side is good / bad food
         self.good = "left" if random.random() > 0.5 else "right"
-        reward1 = 1.0 if self.good == "left" else 0.0
-        reward2 = 1.0 if self.good == "right" else 0.0
+        reward1 = 1.0 if self.good == "left" else -0.5
+        reward2 = 1.0 if self.good == "right" else -0.5
 
         # Create 2 reward objects
         obj1 = RewardObj(100, 50, [0, 255, 255], reward1, 8)
@@ -260,6 +260,10 @@ class TaskBasicChoice(Task):
             agent_action_dict[1] = "cw"
         elif action == 3:
             agent_action_dict[1] = "ccw"
+        elif action == 4:
+            agent_action_dict[1] = "l"
+        elif action == 5:
+            agent_action_dict[1] = "r"
 
         # Do action
         tick_data = self.arena.tick(agent_action_dict)
