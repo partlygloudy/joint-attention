@@ -166,3 +166,152 @@ class TaskFood200(Task):
         elif mode == "return":
             return frame
 
+
+# ----------------------------------------------------------------------------------------------- #
+# TASK: Agent is rewarded for collecting food. Food also provides energy which the agent
+#       has a finite supply of. Ends when the agent runs out of energy or all food is collected.
+# ACTIONS:
+# 0 - move forward
+# 1 - move backward
+# 2 - turn clockwise
+# 3 - turn counterclockwise
+# ---------------------------------------------------------------------------------------------- #
+class TaskBasicChoice(Task):
+
+    def __init__(self, foodcount=10):
+
+        # Initialize parent class
+        super().__init__()
+
+        # Create arena
+        self.arena = Arena(height=200, width=200, color=[255, 255, 255])
+
+        # Call reset to finish initialization
+        self.reset()
+
+    def reset(self):
+
+        # Reset arena
+        self.arena.clear()
+
+        # Randomly select which side is good / bad food
+        self.good = "left" if random.random() > 0.5 else "right"
+        reward1 = 1.0 if self.good == "left" else 0.0
+        reward2 = 1.0 if self.good == "right" else 0.0
+
+        # Create 2 reward objects
+        obj1 = RewardObj(100, 50, [0, 255, 255], reward1, 8)
+        obj2 = RewardObj(100, 150, [0, 255, 255], reward2, 8)
+
+        # Add the objects to the arena
+        self.arena.add_object(obj1, 1)
+        self.arena.add_object(obj2, 2)
+
+        # Set eyeball position, determine proper orientation
+        eye_x = 25
+        eye_y = 100
+        good_x = 100
+        good_y = 50 if self.good == "left" else 150
+        eye_orientation = atan2(-(good_y - eye_y), good_x - eye_x)
+
+        # Add eyeball and add to the arena
+        self.arena.add_object(EyeballObj(
+            x=eye_x,
+            y=eye_y,
+            color=[255,150,150],
+            eye_color=[0,0,0],
+            radius=15,
+            eye_radius=6,
+            orientation=eye_orientation
+        ), 3)
+
+        # Add a single EnergyAgent
+        self.arena.add_agent(EnergyAgent(
+            x=175,
+            y=100,
+            radius=15,
+            color=[0, 255, 0],
+            orientation= pi,
+            eye_radius=6,
+            eye_color=[0, 0, 0],
+            eye_fov=pi/4,
+            eye_resolution=32,
+            energy=100,
+            speed_lin=2,
+            speed_ang=pi/16
+        ))
+
+        # Apply update to arena
+        self.arena.update()
+
+        # Get vision vector for agent, return
+        return self.arena.get_agent_by_id(1).vision
+
+    def step(self, action):
+
+        # Package action into a dictionary
+        agent_action_dict = {}
+
+        if action == 0:
+            agent_action_dict[1] = "f"
+        elif action == 1:
+            agent_action_dict[1] = "b"
+        elif action == 2:
+            agent_action_dict[1] = "cw"
+        elif action == 3:
+            agent_action_dict[1] = "ccw"
+
+        # Do action
+        tick_data = self.arena.tick(agent_action_dict)
+
+        # Compute reward
+        done = False
+        r = 0
+        if tick_data["consumed_count"] > 0:
+            r = tick_data["reward_collected"]
+            done = True
+
+        # Get next state
+        s_next = self.arena.get_agent_by_id(1).vision
+
+        # Return reward, next state, stop indicator
+        return s_next, r, done
+
+    def render(self, scale=1, mode="display", wait=10):
+
+        # Get arena display as numpy array
+        frame = pygame.surfarray.array3d(self.arena.display)
+
+        # Add agent's vision cone to the display
+        X = self.arena.get_agent_by_id(1).X
+        Y = self.arena.get_agent_by_id(1).Y
+        frame[X, Y] = frame[X, Y] - 50
+        frame[frame < 0] = 0
+
+        # Make vision vector portion of frame
+        vision = self.arena.get_agent_by_id(1).vision
+        vision = cv2.resize(vision, (200, 15), interpolation=cv2.INTER_NEAREST)
+
+        # Add vision to the bottom of the frame
+        frame = np.append(frame, np.zeros(shape=(1, 200, 3), dtype=np.uint8), axis=0)
+        frame = np.append(frame, np.multiply(np.ones(shape=(5, 200, 3), dtype=np.uint8), np.array(255)), axis=0)
+        frame = np.append(frame, vision, axis=0)
+        frame = np.append(frame, np.multiply(np.ones(shape=(5, 200, 3), dtype=np.uint8), np.array(255)), axis=0)
+
+        # Add text overlay showing current energy level
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        text_1 = "Energy: " + str(self.arena.get_agent_by_id(1).get_energy())
+        frame = cv2.putText(frame, text_1, (5, 10), font, 0.30, color=(0, 0, 255), thickness=1)
+        text_2 = "Target: " + self.good
+        frame = cv2.putText(frame, text_2, (5, 23), font, 0.30, color=(0, 0, 255), thickness=1)
+
+        # Resize
+        frame = cv2.resize(frame, (int(frame.shape[1] * scale), int(frame.shape[0] * scale)), interpolation=cv2.INTER_LINEAR)
+
+        if mode == "display":
+            cv2.imshow("Food Collection Task", frame)
+            cv2.waitKey(wait)
+
+        elif mode == "return":
+            return frame
+

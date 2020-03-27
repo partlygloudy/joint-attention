@@ -144,6 +144,9 @@ class Arena:
     # - Update the display and agent vision vectors
     def tick(self, agent_actions):
 
+        # Dict of information to return about tick
+        return_data = {}
+
         # Apply all agent actions
         # TODO randomize order in which agents take actions
         for agent_id, action in agent_actions.items():
@@ -175,6 +178,7 @@ class Arena:
 
         # Apply all object actions
         consumed = []
+        reward_collected = 0
         for object_id, obj in self._objects.items():
 
             # Do object actions
@@ -194,10 +198,17 @@ class Arena:
                         food_coords = np.array([obj.x, obj.y])
                         dist = np.linalg.norm(agnt_coords - food_coords, ord=2)
 
-                        # If they are touching, collect food
+                        # If they are touching, consume the object
                         if dist < agent.radius + obj.radius:
                             obj.do_consume(agent)
                             consumed.append(object_id)
+
+                            # If it's a reward object, collect the reward
+                            if isinstance(obj, RewardObj):
+                                reward_collected += obj.reward
+
+        return_data["consumed_count"] = len(consumed)
+        return_data["reward_collected"] = reward_collected
 
         # Remove all consumed objects
         for obj_id in consumed:
@@ -208,6 +219,9 @@ class Arena:
 
         # Update display, agent vision
         self.update()
+
+        # Return information about tick
+        return return_data
 
     # Move an agent linearly (if possible)
     def agent_move_lin(self, agent, dir=1):
@@ -258,7 +272,7 @@ class ArenaObj(ABC):
         self.color = color
 
         # Required attributes
-        self.is_solid = False
+        self.is_solid = False         # Solid = agent can't move through it
         self.is_consumable = False
         self.has_action = False
 
@@ -308,6 +322,47 @@ class FoodObj(ConsumableObj):
 
         # Mark self as consumed
         self.consumed = True
+
+
+class RewardObj(ConsumableObj):
+
+    def __init__(self, x, y, color, reward, radius):
+
+        super().__init__(x, y, color, radius)
+        self.reward = reward
+        self.is_consumable = True
+
+    def draw_self(self, surface):
+        pygame.draw.circle(surface, self.color, [self.x, self.y], self.radius)
+
+    def do_consume(self, consumer):
+
+        # Mark self as consumed
+        self.consumed = True
+
+
+class EyeballObj(ArenaObj):
+
+    def __init__(self, x, y, color, eye_color, radius, eye_radius, orientation):
+
+        super().__init__(x, y, color)
+        self.is_solid = True
+
+        self.radius = radius
+        self.eye_radius = eye_radius
+        self.color = color
+        self.eye_color = eye_color
+        self.orientation = orientation
+
+    def draw_self(self, surface):
+
+        # Draw agent body
+        pygame.draw.circle(surface, self.color, [int(self.x), int(self.y)], self.radius)
+
+        # Draw agent eyeball
+        x_e = int(self.x + (self.radius * cos(self.orientation)))
+        y_e = int(self.y - (self.radius * sin(self.orientation)))
+        pygame.draw.circle(surface, self.eye_color, [int(x_e), int(y_e)], self.eye_radius)
 
 
 # ---------------------------------- #
