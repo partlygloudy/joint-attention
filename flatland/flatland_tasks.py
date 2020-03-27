@@ -178,10 +178,14 @@ class TaskFood200(Task):
 # ---------------------------------------------------------------------------------------------- #
 class TaskBasicChoice(Task):
 
-    def __init__(self, foodcount=10):
+    def __init__(self, resolution=32, fov=pi/3):
 
         # Initialize parent class
         super().__init__()
+
+        # Parameters
+        self.resolution=resolution
+        self.fov=fov
 
         # Create arena
         self.arena = Arena(height=200, width=200, color=[255, 255, 255])
@@ -234,8 +238,8 @@ class TaskBasicChoice(Task):
             orientation= pi,
             eye_radius=6,
             eye_color=[0, 0, 0],
-            eye_fov=pi/4,
-            eye_resolution=32,
+            eye_fov=self.fov,
+            eye_resolution=self.resolution,
             energy=100,
             speed_lin=2,
             speed_ang=pi/16

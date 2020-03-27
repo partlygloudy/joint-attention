@@ -139,6 +139,7 @@ class DQNAgent:
 
     # Train q network using a batch of memories
     def learn_from_memory(self, batch_size=32):
+
         # Get batch data
         states, actions, rewards, next_states = self.memory.get_batch(batch_size)
 
