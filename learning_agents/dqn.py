@@ -137,7 +137,7 @@ class DQNAgent:
     def choose_action(self, s):
         output = self.q_net.predict(self.preprocess_state(s))
         action = np.argmax(output)
-        return action, output[action]
+        return action, output[0, action]
 
     # Train q network using a batch of memories
     def learn_from_memory(self, batch_size=32):
