@@ -251,12 +251,12 @@ class Arena:
         agent.x = new_x
         agent.y = new_y
 
-    # Move an agent linearly (if possible)
+    # Move an agent laterally (if possible)
     def agent_move_lat(self, agent, dir=1):
 
         # Position agent is trying to move to
         noise = np.random.normal(0.0, 0.1) * agent.speed_lin
-        new_x = (agent.x + ((agent.speed_lin + noise) * sin(agent.orientation) * dir))
+        new_x = (agent.x - ((agent.speed_lin + noise) * sin(agent.orientation) * dir))
         new_y = (agent.y - ((agent.speed_lin + noise) * cos(agent.orientation) * dir))
 
         # Keep agent inside the arena
