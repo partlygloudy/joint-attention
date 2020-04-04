@@ -200,8 +200,8 @@ class TaskBasicChoice(Task):
 
         # Randomly select which side is good / bad food
         self.good = "left" if random.random() > 0.5 else "right"
-        reward1 = 1.0 if self.good == "left" else -0.5
-        reward2 = 1.0 if self.good == "right" else -0.5
+        reward1 = 1.0 if self.good == "left" else -1.0
+        reward2 = 1.0 if self.good == "right" else -1.0
 
         # Create 2 reward objects
         obj1 = RewardObj(100, 50, [0, 255, 255], reward1, 8)
@@ -274,7 +274,7 @@ class TaskBasicChoice(Task):
 
         # Compute reward
         done = False
-        r = 0
+        r = -0.001
         if tick_data["consumed_count"] > 0:
             r = tick_data["reward_collected"]
             done = True
@@ -378,7 +378,7 @@ class TaskColoredFood(Task):
             y=100,
             radius=15,
             color=[0, 255, 0],
-            orientation= pi,
+            orientation=pi,
             eye_radius=6,
             eye_color=[0, 0, 0],
             eye_fov=self.fov,

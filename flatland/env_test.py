@@ -6,7 +6,7 @@ import pygame
 
 if __name__ == "__main__":
 
-    test_env = TaskBasicChoice(resolution=64, fov=(3.14))
+    test_env = TaskColoredFood(resolution=64, fov=(3.14))
 
     pygame.init()
 

@@ -4,3 +4,5 @@ venv/
 _educational/
 
 __pycache__/
+
+checkpoints/
