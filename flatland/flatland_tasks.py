@@ -275,6 +275,7 @@ class TaskBasicChoice(Task):
         # Compute reward
         done = False
         r = -0.001
+
         if tick_data["consumed_count"] > 0:
             r = tick_data["reward_collected"]
             done = True

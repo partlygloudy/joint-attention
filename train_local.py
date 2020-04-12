@@ -6,17 +6,17 @@ import time
 import random
 
 # -- EXPERIMENT PARAMETERS -- #
-training_frames = 500000  # Total steps to train over
+training_frames = 2000000  # Total steps to train over
 mem_capacity = training_frames  # Replay memory size
-epoch_size = 5000  # training_frames / 100  # Number of steps in a single epoch
+epoch_size = 10000  # training_frames / 100  # Number of steps in a single epoch
 discount = 0.99
 batch_size = 32
 k = 1  # Number of steps between training batches
 trials = 1  # Number of times to run the whole experiment
 random_buffer_len = 5000  # Number of initial random actions to take
 
-e_checkpoints = [0, 250000, 400000, training_frames]
-e_values = [1.0, 0.05, 0.00, 0.00]
+e_checkpoints = [0, 1200000, 1700000, training_frames]
+e_values = [1.0, 0.1, 0.00, 0.00]
 e = e_values[0]
 
 # Function for computing value of e at each frame
@@ -54,7 +54,7 @@ game_counter = 0
 # -- TRAINING LOOP -- #
 
 # Create environment
-env = flatland_tasks.TaskBasicChoice(resolution=64, fov=3.14)
+env = flatland_tasks.TaskBasicChoice(resolution=64, fov=(3.14/2))
 
 # Initialize agent
 agent = dqn.DQNAgent(memsize=mem_capacity, gamma=discount, resolution=64)
@@ -137,7 +137,7 @@ import cv2
 trials = 20
 
 # Create instance of environment for trial
-env = flatland_tasks.TaskBasicChoice(resolution=64, fov=3.14)
+env = flatland_tasks.TaskBasicChoice(resolution=64, fov=(3.14/2))
 env.reset()
 
 # Video writer object
