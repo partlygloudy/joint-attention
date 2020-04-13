@@ -5,6 +5,9 @@ from tensorflow.keras.models import *
 from tensorflow.keras.initializers import VarianceScaling
 from tensorflow.keras.losses import *
 
+import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
+
 # Other imports
 import numpy as np
 import random
@@ -22,7 +25,7 @@ def get_network(resolution=32):
 
     # First convolution layer
     layer_c1 = Convolution1D(
-        filters=8,
+        filters=16,
         kernel_size=int(resolution / 4),
         strides=2,
         padding="same",
@@ -32,7 +35,7 @@ def get_network(resolution=32):
 
     # Second convolution layer
     layer_c2 = Convolution1D(
-        filters=16,
+        filters=32,
         kernel_size=int(resolution / 8),
         strides=2,
         padding="same",
@@ -45,7 +48,7 @@ def get_network(resolution=32):
 
     # Dense layer
     layer_d1 = Dense(
-        units=32, activation="relu",
+        units=64, activation="relu",
         kernel_initializer=VarianceScaling(scale=1.0)
     )(layer_flatten)
 
