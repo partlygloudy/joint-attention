@@ -35,7 +35,7 @@ class Task(ABC):
 # ---------------------------------------------------------------------------------------------- #
 class TaskFood200(Task):
 
-    def __init__(self, foodcount=10):
+    def __init__(self, resolution=32, fov=pi, foodcount=10):
 
         # Initialize parent class
         super().__init__()
@@ -43,6 +43,9 @@ class TaskFood200(Task):
         # Save foodcount attribute
         self.foodcount_init = foodcount
         self.foodcount_prev = foodcount
+
+        self.resolution = resolution
+        self.fov = fov
 
         # Create arena
         self.arena = Arena(height=200, width=200, color=[255, 255, 255])
@@ -84,8 +87,8 @@ class TaskFood200(Task):
             orientation=random.random() * 2 * pi,
             eye_radius=6,
             eye_color=[0, 0, 0],
-            eye_fov=pi/4,
-            eye_resolution=32,
+            eye_fov=self.fov,
+            eye_resolution=self.resolution,
             energy=100,
             speed_lin=2,
             speed_ang=pi/16
@@ -109,6 +112,10 @@ class TaskFood200(Task):
             agent_action_dict[1] = "cw"
         elif action == 3:
             agent_action_dict[1] = "ccw"
+        elif action == 4:
+            agent_action_dict[1] = "l"
+        elif action == 5:
+            agent_action_dict[1] = "r"
 
         # Do action
         self.arena.tick(agent_action_dict)
