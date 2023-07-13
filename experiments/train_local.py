@@ -14,14 +14,8 @@ batch_size = 32
 k = 1  # Number of steps between training batches
 trials = 1  # Number of times to run the whole experiment
 random_buffer_len = 5000  # Number of initial random actions to take
-
-<<<<<<< HEAD:experiments/train_local.py
 e_checkpoints = [0, 250000, 400000, training_frames]
 e_values = [1.0, 0.01, 0.00, 0.00]
-=======
-e_checkpoints = [0, 1200000, 1700000, training_frames]
-e_values = [1.0, 0.1, 0.00, 0.00]
->>>>>>> master:train_local.py
 e = e_values[0]
 
 # Function for computing value of e at each frame
