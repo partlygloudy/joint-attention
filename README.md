@@ -8,13 +8,13 @@ The overall goal of my work there was to study "joint attention", a cognitive be
 
 To give a concrete example of joint attention: say two people are conversing and one directs their gaze at a picture on the wall. The other individual follows their partner's gaze and also looks at the picture, and the two start talking about it. They are both jointly aware of the picture, their partner, and the fact of their shared gaze. This extremely useful because it allows them to discuss the picture while keeping their gaze on it, rather than constantly looking back at their partner to make sure they are still looking at the same thing.
 
-Joint attention develops slowly in infants, and is exhibited to varying degrees by other cognitively advanced species.
+Joint attention develops slowly in infants - in the above scenario, they will typical "gaze switch", looking back and forth between the other person and the object rather than fixing their gaze on the object. Joint attention is also exhibited to varying degrees by other cognitively advanced species.
 
 The aim of this project was to use reinforcement learning to train virtual agents to develop _gaze following_ which is a precursor to joint attention in humans.
 
 ## Flatland
 
-In this repo, I've created a "Flatland" environment for virtual agents to navigate, as well as a handful of tasks to train the agents on. Flatland is a 2D arena containing one or more agents, and different types of objects. The agent percieves the world through a 1D vision vector, and acts by taking one of several allowed actions for a given task. For each task, the agent is rewarded for certain actions, and penalized for others. Using reinforcement learning, I attempt to train the agent through trial and error to maximize its reward when performing a task. 
+In this repo, I've created a "Flatland" environment for virtual agents to navigate, as well as a handful of tasks to train the agents on. Flatland is a 2D arena containing one or more agents, and different types of objects. The agent percieves the world through a 1D "image" vector, and acts by taking one of several allowed actions for a given task (movements in various directions). For each task, the agent is rewarded for certain actions, and penalized for others. Using reinforcement learning, I attempt to train the agent through trial and error to maximize its reward when performing a task. 
 
 The motivation for using this 2D environment is:
 1. It's substantially less computationally expensive than a 3D world where agents have 2D vision
