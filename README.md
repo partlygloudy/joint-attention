@@ -14,15 +14,17 @@ The aim of this project was to use reinforcement learning to train virtual agent
 
 ## Flatland
 
-![Example of Flatland environment, configured for simple gaze-following task]("flatland.png)
-
 In this repo, I've created a "Flatland" environment for virtual agents to navigate, as well as a handful of tasks to train the agents on. Flatland is a 2D arena containing one or more agents, and different types of objects. The agent percieves the world through a 1D vision vector, and acts by taking one of several allowed actions for a given task. For each task, the agent is rewarded for certain actions, and penalized for others. Using reinforcement learning, I attempt to train the agent through trial and error to maximize its reward when performing a task. 
-
-As an example, in one task, a red and blue object are randomly placed in the arena. The agent is rewarded if it collects (runs into) the blue object, and penalized for running into the red object. With sufficient RL training, it learns to move towards the blue object while avoiding the red one. 
 
 The motivation for using this 2D environment is:
 1. It's substantially less computationally expensive than a 3D world where agents have 2D vision
 2. It still supports "vision", and agents trained in it could plausibly develop spatial awareness
+
+![Example of Flatland environment, configured for simple gaze-following task](flatland.png)
+
+As an example, in one task, two identical objects are placed in the arena, as well as a second agent. The second agent "looks" at one of the two objects. The first agent (the one we're training), is rewarded for collecting the object the second agent is looking at, and penalized for collecting the other. With sufficient RL training, it learns to follow the 'gaze' of the second agent, and earn the reward. 
+
+
 
 ## Code
 
